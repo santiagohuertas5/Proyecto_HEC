@@ -1,0 +1,34 @@
+rm(list=ls())
+library('readxl')
+library(dplyr)
+library(haven)
+library(psych)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stargazer)
+library("writexl")
+setwd("/Users/santiagohuertas/Desktop/Econometria 1/Taller de investigacion/Paquete de replicacion/Build/Outputs")
+load("VMI5.RData")
+
+Reg = lm(DCalVict ~ Año + DSex + DRAm + DRO + DRC + DRP + DSex*(DRAm + DRO + DRC + DRP), VMI5)
+stargazer(Reg, title = 'Regresion Calidad de Victima', type = 'html', out = 'RegTF.doc')
+
+
+
+stargazer(as.data.frame(VMI5[c("Año","DRAm","DRC","DRO","DRP")]), type="html", 
+          title="Estadisticas descriptivas", 
+          out="tabla.doc", flip = FALSE)
+
+
+stargazer(as.data.frame(VMI5[c("DRAn","DSex")]), type="html", 
+          title="Estadisticas descriptivas", 
+          out="tabla2.doc", flip = FALSE)
+
+counts <- table(VMI5$DCalVict)
+barplot(counts, main="Victima por condicion en el conflicto", horiz=TRUE,
+        names.arg=c("COMBATIENTE","CIVIL"))
+
+var <- table(VMI5$Sexo)
+barplot(var, main="Victima por Genero", horiz=TRUE,
+        names.arg=c("Hombre","Mujer"))

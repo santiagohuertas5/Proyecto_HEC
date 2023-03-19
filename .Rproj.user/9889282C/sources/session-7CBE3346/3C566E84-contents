@@ -1,0 +1,10 @@
+require(pacman)
+
+## usar la función p_load de pacman para instalar/llamar las librerías de la clase
+p_load(tidyverse, ## manipular/limpiar conjuntos de datos.
+       rio, ## para leer/escribir archivos desde diferentes formatos. 
+       skimr, ## skim: describir un conjunto de datos
+       janitor) ##  tabyl: frecuencias relativas
+set.seed(0117)
+db_1 = tibble(id = 102:105 , income = runif(4,1000,2000) %>% round())
+db_2 = tibble(id = 103:106 , age = runif(4,30,40)  %>% round())
