@@ -44,6 +44,39 @@ violencia_sexual <- read_excel("CasosVS_202206.xlsx")
 
 
 
+#Limpieza bases de datos presidencia y alcalde
+
+
+
+
+
+#Limpieza vases de datos de población 
+
+
+#Calcular poblacion mayor de edad para 1985 - 1994
+poblacion_1985_1994 <- mutate(.data = poblacion_1985_1994, total_mayores18 = Total_18 + Total_19 + 
+                               Total_20 + Total_21 + Total_22 + Total_23 + Total_24 + Total_25 +
+                               Total_26 + Total_27 + Total_28 + Total_29 + Total_30 + Total_31 +
+                               Total_32 + Total_33 + Total_34 + Total_35 + Total_36 + Total_37 +
+                               Total_38 + Total_39 + Total_40 + Total_41 + Total_42 + Total_43 + 
+                               Total_44 + Total_45 + Total_46 + Total_47 + Total_48 + Total_49 + 
+                               Total_50 + Total_51 + Total_52 + Total_53 + Total_54 + Total_55 + 
+                               Total_56 + Total_57 + Total_58 + Total_59 + Total_60 + Total_61 + 
+                               Total_62 + Total_63 + Total_64 + Total_65 + Total_66 + Total_67 + 
+                               Total_68 + Total_69 + Total_70 + Total_71 + Total_72 + Total_73 + 
+                               Total_74 + Total_75 + Total_76 + Total_77 + Total_78 + Total_79 + 
+                               Total_80 + Total_81 + Total_82 + Total_83 + Total_84 + Total_85 + 
+                               Total_86 + Total_87 + Total_88 + Total_89 + Total_90 + Total_91 +
+                               Total_92 + Total_93 + Total_94 + Total_95 + Total_96 + Total_97 +
+                               Total_98 + Total_99 + Total_100_y_más
+                               )
+
+
+poblacion_1985_1994 <- subset(poblacion_1985_1994$ÁREA_GEOGRÁFICA == Total)
+poblacion_1985_1994[poblacion_1985_1994$ÁREA_GEOGRÁFICA == Total, ]   
+
+#Limpieza bases de datos violencia
+
 
 
 
