@@ -3,7 +3,7 @@
     "path": "~/Desktop/Historia económica de Colombia/Proyecto HEC/HEC/Script HEC.R",
     "project_path": "Script HEC.R",
     "type": "r_source",
-    "hash": "2014475090",
+    "hash": "2097588317",
     "contents": "",
     "dirty": false,
     "created": 1679247048980.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "207,0",
-        "scrollLine": "190"
+        "cursorPosition": "335,0",
+        "scrollLine": "324"
     },
     "folds": "",
-    "lastKnownWriteTime": 1679291989,
+    "lastKnownWriteTime": 1679332638,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1679291989625,
+    "last_content_update": 1679332638746,
     "read_only": false,
     "read_only_alternatives": []
 }
