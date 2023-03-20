@@ -9,7 +9,7 @@ elec_pres_1990 <- read_dta("1990_presidencia.dta")
 elec_pres_1994 <- read_dta("1994_Presidencia_Segunda_Vuelta.dta")
 elec_pres_1998 <- read_dta("1998_Presidencia_Segunda_Vuelta.dta")
 elec_pres_2002 <- read_dta("2002_Presidencia.dta")
-elec_pres_2006 <- read_dta("2002_Presidencia.dta")
+elec_pres_2006 <- read_dta("2006_Presidencia.dta")
 elec_pres_2010 <- read_dta("2010_Presidencia_Primera_Vuelta.dta")
 elec_pres_2014 <- read_dta("2014_Presidencia_Segunda_Vuelta.dta")
 elec_pres_2018 <- read_dta("2018_Presidencia_Primera_Vuelta.dta")
@@ -333,15 +333,13 @@ poblacion_y_votos <- left_join(x=poblacion_1986_2018, y=votos_totales, by=c("cod
 
 rm(votos_totales, poblacion_1986_2018)
 
+poblacion_y_votos <- mutate(.data = poblacion_y_votos, participacion = votos/total_mayores18)
 
+
+poblacion_y_votos <- subset(poblacion_y_votos, total_mayores18 != 0 &  votos != 0 & participacion < 1)
 
 
 #Limpieza bases de datos violencia
-
-
-
-
-
 
 
 
