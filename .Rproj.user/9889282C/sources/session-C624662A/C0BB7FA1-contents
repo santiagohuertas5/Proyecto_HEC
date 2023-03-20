@@ -184,6 +184,39 @@ elec_pres_2014 <- subset(elec_pres_2014, select = c(ano, fecha_eleccion, codmpio
 elec_pres_2018 <- subset(elec_pres_2018, select = c(ano, fecha_eleccion, codmpio, municipio, primer_apellido, nombres, votos))
 
 
+total_votos_alca_1988<- aggregate(votos ~ codmpio, data = elec_alca_1988, sum)
+total_votos_alca_1992<- aggregate(votos ~ codmpio, data = elec_alca_1992, sum)
+total_votos_alca_1997<- aggregate(votos ~ codmpio, data = elec_alca_1997, sum)
+total_votos_alca_2000<- aggregate(votos ~ codmpio, data = elec_alca_2000, sum)
+total_votos_alca_2003<- aggregate(votos ~ codmpio, data = elec_alca_2003, sum)
+total_votos_alca_2007<- aggregate(votos ~ codmpio, data = elec_alca_2007, sum)
+total_votos_alca_2011<- aggregate(votos ~ codmpio, data = elec_alca_2011, sum)
+total_votos_alca_2015<- aggregate(votos ~ codmpio, data = elec_alca_2015, sum)
+total_votos_alca_2019<- aggregate(votos ~ codmpio, data = elec_alca_2019, sum)
+
+total_votos_pres_1986 <- aggregate(votos ~ codmpio, data = elec_pres_1986, sum)
+total_votos_pres_1990 <- aggregate(votos ~ codmpio, data = elec_pres_1990, sum)
+total_votos_pres_1994 <- aggregate(votos ~ codmpio, data = elec_pres_1994, sum)
+total_votos_pres_1998 <- aggregate(votos ~ codmpio, data = elec_pres_1998, sum)
+total_votos_pres_2002 <- aggregate(votos ~ codmpio, data = elec_pres_2002, sum)
+total_votos_pres_2006 <- aggregate(votos ~ codmpio, data = elec_pres_2006, sum)
+total_votos_pres_2010 <- aggregate(votos ~ codmpio, data = elec_pres_2010, sum)
+total_votos_pres_2014 <- aggregate(votos ~ codmpio, data = elec_pres_2014, sum)
+total_votos_pres_2018 <- aggregate(votos ~ codmpio, data = elec_pres_2018, sum)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
