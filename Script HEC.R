@@ -14,7 +14,9 @@ elec_pres_2010 <- read_dta("2010_Presidencia_Primera_Vuelta.dta")
 elec_pres_2014 <- read_dta("2014_Presidencia_Segunda_Vuelta.dta")
 elec_pres_2018 <- read_dta("2018_Presidencia_Primera_Vuelta.dta")
 elec_alca_1988 <- read_dta("1988_alcaldia.dta")
+elec_alca_1990 <- read_dta("1990_alcaldia.dta")
 elec_alca_1992 <- read_dta("1992_alcaldia.dta")
+elec_alca_1994 <- read_dta("1994_alcaldia.dta")
 elec_alca_1997 <- read_dta("1997_alcaldia.dta")
 elec_alca_2000 <- read_dta("2000_alcaldia.dta")
 elec_alca_2003 <- read_dta("2003_alcaldia.dta")
@@ -169,7 +171,9 @@ poblacion_1986_2018 <- subset(poblacion_1986_2018, select = c(MPIO,codmpio, ano,
 #Limpieza bases de datos presidencia y alcaldías
 
 elec_alca_1988 <- subset(elec_alca_1988, select = c(ano, fecha_eleccion, codmpio, municipio, primer_apellido, nombres, votos))
+elec_alca_1990 <- subset(elec_alca_1990, select = c(ano, fecha_eleccion, codmpio, municipio, primer_apellido, nombres, votos))
 elec_alca_1992 <- subset(elec_alca_1992, select = c(ano, fecha_eleccion, codmpio, municipio, primer_apellido, nombres, votos))
+elec_alca_1994 <- subset(elec_alca_1994, select = c(ano, fecha_eleccion, codmpio, municipio, primer_apellido, nombres, votos))
 elec_alca_1997 <- subset(elec_alca_1997, select = c(ano, fecha_eleccion, codmpio, municipio, primer_apellido, nombres, votos))
 elec_alca_2000 <- subset(elec_alca_2000, select = c(ano, fecha_eleccion, codmpio, municipio, primer_apellido, nombres, votos))
 elec_alca_2003 <- subset(elec_alca_2003, select = c(ano, fecha_eleccion, codmpio, municipio, primer_apellido, nombres, votos))
@@ -192,55 +196,90 @@ elec_pres_2018 <- subset(elec_pres_2018, select = c(ano, fecha_eleccion, codmpio
 total_votos_alca_1988<- aggregate(votos ~ codmpio, data = elec_alca_1988, sum)
 ano <- rep(1988,nrow(total_votos_alca_1988))
 total_votos_alca_1988 <- cbind(total_votos_alca_1988, ano)
-total_votos_alca_1988 <- subset(total_votos_alca_1988, select = c(ano,codmpio,votos))
+eleccion <- rep("alcaldia", nrow(total_votos_alca_1988))
+total_votos_alca_1988<- cbind(total_votos_alca_1988, eleccion)
+total_votos_alca_1988 <- subset(total_votos_alca_1988, select = c(ano,codmpio,votos, eleccion))
+
+
+total_votos_alca_1990<- aggregate(votos ~ codmpio, data = elec_alca_1992, sum)
+ano <- rep(1990,nrow(total_votos_alca_1990))
+total_votos_alca_1990 <- cbind(total_votos_alca_1990, ano)
+eleccion <- rep("alcaldia", nrow(total_votos_alca_1990))
+total_votos_alca_1990<- cbind(total_votos_alca_1990, eleccion)
+total_votos_alca_1990 <- subset(total_votos_alca_1990, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_alca_1992<- aggregate(votos ~ codmpio, data = elec_alca_1992, sum)
 ano <- rep(1992,nrow(total_votos_alca_1992))
 total_votos_alca_1992 <- cbind(total_votos_alca_1992, ano)
-total_votos_alca_1992 <- subset(total_votos_alca_1992, select = c(ano,codmpio,votos))
+eleccion <- rep("alcaldia", nrow(total_votos_alca_1992))
+total_votos_alca_1992<- cbind(total_votos_alca_1992, eleccion)
+total_votos_alca_1992 <- subset(total_votos_alca_1992, select = c(ano,codmpio,votos, eleccion))
+
+
+total_votos_alca_1994<- aggregate(votos ~ codmpio, data = elec_alca_1992, sum)
+ano <- rep(1994,nrow(total_votos_alca_1994))
+total_votos_alca_1994 <- cbind(total_votos_alca_1994, ano)
+eleccion <- rep("alcaldia", nrow(total_votos_alca_1994))
+total_votos_alca_1994<- cbind(total_votos_alca_1994, eleccion)
+total_votos_alca_1994 <- subset(total_votos_alca_1994, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_alca_1997<- aggregate(votos ~ codmpio, data = elec_alca_1997, sum)
 ano <- rep(1997,nrow(total_votos_alca_1997))
 total_votos_alca_1997 <- cbind(total_votos_alca_1997, ano)
-total_votos_alca_1997 <- subset(total_votos_alca_1997, select = c(ano,codmpio,votos))
+eleccion <- rep("alcaldia", nrow(total_votos_alca_1997))
+total_votos_alca_1997<- cbind(total_votos_alca_1997, eleccion)
+total_votos_alca_1997 <- subset(total_votos_alca_1997, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_alca_2000<- aggregate(votos ~ codmpio, data = elec_alca_2000, sum)
 ano <- rep(2000,nrow(total_votos_alca_2000))
 total_votos_alca_2000 <- cbind(total_votos_alca_2000, ano)
-total_votos_alca_2000 <- subset(total_votos_alca_2000, select = c(ano,codmpio,votos))
+eleccion <- rep("alcaldia", nrow(total_votos_alca_2000))
+total_votos_alca_2000<- cbind(total_votos_alca_2000, eleccion)
+total_votos_alca_2000 <- subset(total_votos_alca_2000, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_alca_2003<- aggregate(votos ~ codmpio, data = elec_alca_2003, sum)
 ano <- rep(2003,nrow(total_votos_alca_2003))
 total_votos_alca_2003 <- cbind(total_votos_alca_2003, ano)
-total_votos_alca_2003 <- subset(total_votos_alca_2003, select = c(ano,codmpio,votos))
+eleccion <- rep("alcaldia", nrow(total_votos_alca_2003))
+total_votos_alca_2003<- cbind(total_votos_alca_2003, eleccion)
+total_votos_alca_2003 <- subset(total_votos_alca_2003, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_alca_2007<- aggregate(votos ~ codmpio, data = elec_alca_2007, sum)
 ano <- rep(2007,nrow(total_votos_alca_2007))
 total_votos_alca_2007 <- cbind(total_votos_alca_2007, ano)
-total_votos_alca_2007 <- subset(total_votos_alca_2007, select = c(ano,codmpio,votos))
+eleccion <- rep("alcaldia", nrow(total_votos_alca_2007))
+total_votos_alca_2007<- cbind(total_votos_alca_2007, eleccion)
+total_votos_alca_2007 <- subset(total_votos_alca_2007, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_alca_2011<- aggregate(votos ~ codmpio, data = elec_alca_2011, sum)
 ano <- rep(2011,nrow(total_votos_alca_2011))
 total_votos_alca_2011 <- cbind(total_votos_alca_2011, ano)
-total_votos_alca_2011 <- subset(total_votos_alca_2011, select = c(ano,codmpio,votos))
+eleccion <- rep("alcaldia", nrow(total_votos_alca_2011))
+total_votos_alca_2011<- cbind(total_votos_alca_2011, eleccion)
+total_votos_alca_2011 <- subset(total_votos_alca_2011, select = c(ano,codmpio,votos, eleccion))
+
 
 
 total_votos_alca_2015<- aggregate(votos ~ codmpio, data = elec_alca_2015, sum)
 ano <- rep(2015,nrow(total_votos_alca_2015))
 total_votos_alca_2015 <- cbind(total_votos_alca_2015, ano)
-total_votos_alca_2015 <- subset(total_votos_alca_2015, select = c(ano,codmpio,votos))
+eleccion <- rep("alcaldia", nrow(total_votos_alca_2015))
+total_votos_alca_2015<- cbind(total_votos_alca_2015, eleccion)
+total_votos_alca_2015 <- subset(total_votos_alca_2015, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_alca_2019<- aggregate(votos ~ codmpio, data = elec_alca_2019, sum)
 ano <- rep(2019,nrow(total_votos_alca_2019))
 total_votos_alca_2019 <- cbind(total_votos_alca_2019, ano)
-total_votos_alca_2019 <- subset(total_votos_alca_2019, select = c(ano,codmpio,votos))
+eleccion <- rep("alcaldia", nrow(total_votos_alca_2019))
+total_votos_alca_2019<- cbind(total_votos_alca_2019, eleccion)
+total_votos_alca_2019 <- subset(total_votos_alca_2019, select = c(ano,codmpio,votos, eleccion))
 
 
 
@@ -248,95 +287,119 @@ total_votos_alca_2019 <- subset(total_votos_alca_2019, select = c(ano,codmpio,vo
 total_votos_pres_1986 <- aggregate(votos ~ codmpio, data = elec_pres_1986, sum)
 ano <- rep(1986,nrow(total_votos_pres_1986))
 total_votos_pres_1986 <- cbind(total_votos_pres_1986, ano)
-total_votos_pres_1986 <- subset(total_votos_pres_1986, select = c(ano,codmpio,votos))
+eleccion <- rep("presidencia", nrow(total_votos_pres_1986))
+total_votos_pres_1986<- cbind(total_votos_pres_1986, eleccion)
+total_votos_pres_1986 <- subset(total_votos_pres_1986, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_pres_1990 <- aggregate(votos ~ codmpio, data = elec_pres_1990, sum)
 ano <- rep(1990,nrow(total_votos_pres_1990))
 total_votos_pres_1990 <- cbind(total_votos_pres_1990, ano)
-total_votos_pres_1990 <- subset(total_votos_pres_1990, select = c(ano,codmpio,votos))
+eleccion <- rep("presidencia", nrow(total_votos_pres_1990))
+total_votos_pres_1990<- cbind(total_votos_pres_1990, eleccion)
+total_votos_pres_1990 <- subset(total_votos_pres_1990, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_pres_1994 <- aggregate(votos ~ codmpio, data = elec_pres_1994, sum)
 ano <- rep(1994,nrow(total_votos_pres_1994))
 total_votos_pres_1994 <- cbind(total_votos_pres_1994, ano)
-total_votos_pres_1994 <- subset(total_votos_pres_1994, select = c(ano,codmpio,votos))
+eleccion <- rep("presidencia", nrow(total_votos_pres_1994))
+total_votos_pres_1994<- cbind(total_votos_pres_1994, eleccion)
+total_votos_pres_1994 <- subset(total_votos_pres_1994, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_pres_1998 <- aggregate(votos ~ codmpio, data = elec_pres_1998, sum)
 ano <- rep(1998,nrow(total_votos_pres_1998))
 total_votos_pres_1998 <- cbind(total_votos_pres_1998, ano)
-total_votos_pres_1998 <- subset(total_votos_pres_1998, select = c(ano,codmpio,votos))
+eleccion <- rep("presidencia", nrow(total_votos_pres_1998))
+total_votos_pres_1998<- cbind(total_votos_pres_1998, eleccion)
+total_votos_pres_1998 <- subset(total_votos_pres_1998, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_pres_2002 <- aggregate(votos ~ codmpio, data = elec_pres_2002, sum)
 ano <- rep(2002,nrow(total_votos_pres_2002))
 total_votos_pres_2002 <- cbind(total_votos_pres_2002, ano)
-total_votos_pres_2002 <- subset(total_votos_pres_2002, select = c(ano,codmpio,votos))
+eleccion <- rep("presidencia", nrow(total_votos_pres_2002))
+total_votos_pres_2002<- cbind(total_votos_pres_2002, eleccion)
+total_votos_pres_2002 <- subset(total_votos_pres_2002, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_pres_2006 <- aggregate(votos ~ codmpio, data = elec_pres_2006, sum)
 ano <- rep(2006,nrow(total_votos_pres_2006))
 total_votos_pres_2006 <- cbind(total_votos_pres_2006, ano)
-total_votos_pres_2006 <- subset(total_votos_pres_2006, select = c(ano,codmpio,votos))
+eleccion <- rep("presidencia", nrow(total_votos_pres_2006))
+total_votos_pres_2006<- cbind(total_votos_pres_2006, eleccion)
+total_votos_pres_2006 <- subset(total_votos_pres_2006, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_pres_2010 <- aggregate(votos ~ codmpio, data = elec_pres_2010, sum)
 ano <- rep(2010,nrow(total_votos_pres_2010))
 total_votos_pres_2010 <- cbind(total_votos_pres_2010, ano)
-total_votos_pres_2010 <- subset(total_votos_pres_2010, select = c(ano,codmpio,votos))
+eleccion <- rep("presidencia", nrow(total_votos_pres_2010))
+total_votos_pres_2010<- cbind(total_votos_pres_2010, eleccion)
+total_votos_pres_2010 <- subset(total_votos_pres_2010, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_pres_2014 <- aggregate(votos ~ codmpio, data = elec_pres_2014, sum)
 ano <- rep(2014,nrow(total_votos_pres_2014))
 total_votos_pres_2014 <- cbind(total_votos_pres_2014, ano)
-total_votos_pres_2014 <- subset(total_votos_pres_2014, select = c(ano,codmpio,votos))
+eleccion <- rep("presidencia", nrow(total_votos_pres_2014))
+total_votos_pres_2014<- cbind(total_votos_pres_2014, eleccion)
+total_votos_pres_2014 <- subset(total_votos_pres_2014, select = c(ano,codmpio,votos, eleccion))
 
 
 total_votos_pres_2018 <- aggregate(votos ~ codmpio, data = elec_pres_2018, sum)
 ano <- rep(2018,nrow(total_votos_pres_2018))
 total_votos_pres_2018 <- cbind(total_votos_pres_2018, ano)
-total_votos_pres_2018 <- subset(total_votos_pres_2018, select = c(ano,codmpio,votos))
+eleccion <- rep("presidencia", nrow(total_votos_pres_2018))
+total_votos_pres_2018<- cbind(total_votos_pres_2018, eleccion)
+total_votos_pres_2018 <- subset(total_votos_pres_2018, select = c(ano,codmpio,votos, eleccion))
 
 
-rm(elec_alca_1988, elec_alca_1992, elec_alca_1997, elec_alca_2000, elec_alca_2003, elec_alca_2007,
-   elec_alca_2011, elec_alca_2015, elec_alca_2019, elec_pres_1986, elec_pres_1990, elec_pres_1994,
-   elec_pres_1998, elec_pres_2002, elec_pres_2006, elec_pres_2010, elec_pres_2014, elec_pres_2018)
+rm(elec_alca_1988, elec_alca_1990 ,elec_alca_1992, elec_alca_1994 ,elec_alca_1997, elec_alca_2000,
+   elec_alca_2003, elec_alca_2007,elec_alca_2011, elec_alca_2015, elec_alca_2019, elec_pres_1986, 
+   elec_pres_1990, elec_pres_1994,elec_pres_1998, elec_pres_2002, elec_pres_2006, elec_pres_2010, 
+   elec_pres_2014, elec_pres_2018)
 
-votos_totales <- rbind(total_votos_alca_1988, total_votos_alca_1992, total_votos_alca_1997,
-                       total_votos_alca_2000, total_votos_alca_2003, total_votos_alca_2007,
-                       total_votos_alca_2011, total_votos_alca_2015, total_votos_alca_2019,
-                       total_votos_pres_1986, total_votos_pres_1990, total_votos_pres_1994,
-                       total_votos_pres_1998, total_votos_pres_2002, total_votos_pres_2006,
-                       total_votos_pres_2010, total_votos_pres_2014, total_votos_pres_2018)
+votos_totales <- rbind(total_votos_alca_1988, total_votos_alca_1990, total_votos_alca_1992, 
+                       total_votos_alca_1994, total_votos_alca_1997, total_votos_alca_2000, 
+                       total_votos_alca_2003, total_votos_alca_2007, total_votos_alca_2011, 
+                       total_votos_alca_2015, total_votos_alca_2019, total_votos_pres_1986, 
+                       total_votos_pres_1990, total_votos_pres_1994, total_votos_pres_1998, 
+                       total_votos_pres_2002, total_votos_pres_2006, total_votos_pres_2010, 
+                       total_votos_pres_2014, total_votos_pres_2018)
 
 
 
 votos_totales <- rbind(total_votos_pres_1986, total_votos_alca_1988, total_votos_pres_1990,
-                       total_votos_alca_1992, total_votos_pres_1994, total_votos_alca_1997,
-                       total_votos_pres_1998, total_votos_alca_2000, total_votos_pres_2002,
-                       total_votos_alca_2003, total_votos_pres_2006, total_votos_alca_2007,
-                       total_votos_pres_2010, total_votos_alca_2011, total_votos_pres_2014,
-                       total_votos_alca_2015, total_votos_pres_2018, total_votos_alca_2019)
+                       total_votos_alca_1990, total_votos_alca_1992, total_votos_pres_1994, 
+                       total_votos_alca_1994, total_votos_alca_1997, total_votos_pres_1998, 
+                       total_votos_alca_2000, total_votos_pres_2002, total_votos_alca_2003, 
+                       total_votos_pres_2006, total_votos_alca_2007, total_votos_pres_2010, 
+                       total_votos_alca_2011, total_votos_pres_2014, total_votos_alca_2015, 
+                       total_votos_pres_2018, total_votos_alca_2019)
 
 
 votos_totales <- arrange(.data=votos_totales , codmpio)
 
 rm(total_votos_pres_1986, total_votos_alca_1988, total_votos_pres_1990,
-   total_votos_alca_1992, total_votos_pres_1994, total_votos_alca_1997,
-   total_votos_pres_1998, total_votos_alca_2000, total_votos_pres_2002,
-   total_votos_alca_2003, total_votos_pres_2006, total_votos_alca_2007,
-   total_votos_pres_2010, total_votos_alca_2011, total_votos_pres_2014,
-   total_votos_alca_2015, total_votos_pres_2018, total_votos_alca_2019)
+   total_votos_alca_1990, total_votos_alca_1992, total_votos_pres_1994, 
+   total_votos_alca_1994, total_votos_alca_1997, total_votos_pres_1998, 
+   total_votos_alca_2000, total_votos_pres_2002, total_votos_alca_2003, 
+   total_votos_pres_2006, total_votos_alca_2007, total_votos_pres_2010, 
+   total_votos_alca_2011, total_votos_pres_2014, total_votos_alca_2015, 
+   total_votos_pres_2018, total_votos_alca_2019)
 
 poblacion_y_votos <- left_join(x=poblacion_1986_2018, y=votos_totales, by=c("codmpio","ano"))
 
 rm(votos_totales, poblacion_1986_2018)
 
 poblacion_y_votos <- mutate(.data = poblacion_y_votos, participacion = votos/total_mayores18)
-
+poblacion_y_votos <- na.omit(poblacion_y_votos)
 
 poblacion_y_votos <- subset(poblacion_y_votos, total_mayores18 != 0 &  votos != 0 & participacion < 1)
+
+hist(poblacion_y_votos$participacion)
 
 
 #Limpieza bases de datos violencia
@@ -346,22 +409,24 @@ acciones_belicas$ano<-acciones_belicas$Año
 acciones_belicas$codmpio <- acciones_belicas$`Código DANE de Municipio`
 acciones_belicas$MPIO <- acciones_belicas$Municipio
 acciones_belicas$victimas <- acciones_belicas$`Total de Víctimas del Caso`
-acciones_belicas$lesionados_civiles <- acciones_belicas$`Lesionados Civiles`
-acciones_belicas$lesionados_combatientes <- acciones_belicas$`Lesionados Combatientes`
-acciones_belicas <- mutate(.data = acciones_belicas, total_lesionados = lesionados_combatientes + 
-                             lesionados_civiles) 
-acciones_belicas<- subset(acciones_belicas, select = c(id_caso, ano, codmpio, MPIO,
-                                                       lesionados_combatientes, lesionados_civiles,
-                                                       total_lesionados, victimas))
+acciones_belicas$codmpio <- as.numeric(as.character(acciones_belicas$codmpio))
+acciones_belicas$ano <- as.numeric(as.character(acciones_belicas$ano))
+acciones_belicas<- subset(acciones_belicas, select = c(id_caso, ano, codmpio, MPIO,victimas))
+acciones_belicas <- subset(acciones_belicas, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
+acciones_belicas <-subset(acciones_belicas, ano >1985)
+
 
 
 asesinatos_selectivos$id_caso<- asesinatos_selectivos$`ID Caso`
 asesinatos_selectivos$ano<-asesinatos_selectivos$Año
 asesinatos_selectivos$codmpio <- asesinatos_selectivos$`Código DANE de Municipio`
 asesinatos_selectivos$MPIO <- asesinatos_selectivos$Municipio
-asesinatos_selectivos$lesionados_civiles <- asesinatos_selectivos $`Lesionados Civiles`
 asesinatos_selectivos$victimas <- asesinatos_selectivos$`Total de Víctimas del Caso`
-asesinatos_selectivos<- subset(asesinatos_selectivos, select = c(id_caso, ano, codmpio, MPIO, lesionados_civiles ,victimas))
+asesinatos_selectivos$codmpio <- as.numeric(as.character(asesinatos_selectivos$codmpio))
+asesinatos_selectivos$ano <- as.numeric(as.character(asesinatos_selectivos$ano))
+asesinatos_selectivos<- subset(asesinatos_selectivos, select = c(id_caso, ano, codmpio, MPIO ,victimas))
+asesinatos_selectivos <- subset(asesinatos_selectivos, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
+asesinatos_selectivos <-subset(asesinatos_selectivos, ano >1985)
 
 
 
@@ -369,9 +434,12 @@ danos_bienes_civiles$id_caso<- danos_bienes_civiles$`ID Caso`
 danos_bienes_civiles$ano<-danos_bienes_civiles$Año
 danos_bienes_civiles$codmpio <- danos_bienes_civiles$`Código DANE de Municipio`
 danos_bienes_civiles$MPIO <- danos_bienes_civiles$Municipio
-danos_bienes_civiles$lesionados_civiles <- danos_bienes_civiles $`Lesionados Civiles`
 danos_bienes_civiles$victimas <- danos_bienes_civiles$`Total de Víctimas del Caso`
-danos_bienes_civiles<- subset(danos_bienes_civiles, select = c(id_caso, ano, codmpio, MPIO, lesionados_civiles ,victimas))
+danos_bienes_civiles$codmpio <- as.numeric(as.character(danos_bienes_civiles$codmpio))
+danos_bienes_civiles$ano <- as.numeric(as.character(danos_bienes_civiles$ano))
+danos_bienes_civiles<- subset(danos_bienes_civiles, select = c(id_caso, ano, codmpio, MPIO ,victimas))
+danos_bienes_civiles <- subset(danos_bienes_civiles, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
+danos_bienes_civiles <-subset(danos_bienes_civiles, ano >1985)
 
 
 
@@ -379,9 +447,12 @@ desaparicion_forzada$id_caso<- desaparicion_forzada$`ID Caso`
 desaparicion_forzada$ano<-desaparicion_forzada$Año
 desaparicion_forzada$codmpio <- desaparicion_forzada$`Código DANE de Municipio`
 desaparicion_forzada$MPIO <- desaparicion_forzada$Municipio
-desaparicion_forzada$lesionados_civiles <- desaparicion_forzada $`Lesionados Civiles`
 desaparicion_forzada$victimas <- desaparicion_forzada$`Total de Víctimas del Caso`
-desaparicion_forzada<- subset(desaparicion_forzada, select = c(id_caso, ano, codmpio, MPIO, lesionados_civiles ,victimas))
+desaparicion_forzada$codmpio <- as.numeric(as.character(desaparicion_forzada$codmpio))
+desaparicion_forzada$ano <- as.numeric(as.character(desaparicion_forzada$ano))
+desaparicion_forzada<- subset(desaparicion_forzada, select = c(id_caso, ano, codmpio, MPIO ,victimas))
+desaparicion_forzada <- subset(desaparicion_forzada, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
+desaparicion_forzada <-subset(desaparicion_forzada, ano >1985)
 
 
 
@@ -390,9 +461,12 @@ masacres$id_caso<- masacres$`ID Caso`
 masacres$ano<-masacres$Año
 masacres$codmpio <- masacres$`Código DANE de Municipio`
 masacres$MPIO <- masacres$Municipio
-masacres$lesionados_civiles <- masacres $`Lesionados Civiles`
 masacres$victimas <- masacres$`Total de Víctimas del Caso`
-masacres<- subset(masacres, select = c(id_caso, ano, codmpio, MPIO, lesionados_civiles ,victimas))
+masacres$codmpio <- as.numeric(as.character(masacres$codmpio))
+masacres$ano <- as.numeric(as.character(masacres$ano))
+masacres<- subset(masacres, select = c(id_caso, ano, codmpio, MPIO ,victimas))
+masacres <- subset(masacres, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
+masacres <-subset(masacres, ano >1985)
 
 
 
@@ -400,9 +474,12 @@ minas$id_caso<- minas$`ID Caso`
 minas$ano<-minas$Año
 minas$codmpio <- minas$`Código DANE de Municipio`
 minas$MPIO <- minas$Municipio
-minas$lesionados_civiles <- minas $`Lesionados Civiles`
 minas$victimas <- minas$`Total de Víctimas del Caso`
-minas<- subset(minas, select = c(id_caso, ano, codmpio, MPIO, lesionados_civiles ,victimas))
+minas$codmpio <- as.numeric(as.character(minas$codmpio))
+minas$ano <- as.numeric(as.character(minas$ano))
+minas<- subset(minas, select = c(id_caso, ano, codmpio, MPIO ,victimas))
+minas <- subset(minas, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
+minas <-subset(minas, ano >1985)
 
 
 
@@ -411,7 +488,11 @@ reclutamiento_menores$ano<-reclutamiento_menores$Año
 reclutamiento_menores$codmpio <- reclutamiento_menores$`Código DANE de Municipio`
 reclutamiento_menores$MPIO <- reclutamiento_menores$Municipio
 reclutamiento_menores$victimas <- reclutamiento_menores$`Total de Víctimas del Caso`
+reclutamiento_menores$codmpio <- as.numeric(as.character(reclutamiento_menores$codmpio))
+reclutamiento_menores$ano <- as.numeric(as.character(reclutamiento_menores$ano))
 reclutamiento_menores<- subset(reclutamiento_menores, select = c(id_caso, ano, codmpio, MPIO ,victimas))
+reclutamiento_menores <- subset(reclutamiento_menores, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
+reclutamiento_menores <-subset(reclutamiento_menores, ano >1985)
 
 
 
@@ -420,9 +501,12 @@ secuestros$id_caso<- secuestros$`ID Caso`
 secuestros$ano<-secuestros$Año
 secuestros$codmpio <- secuestros$`Código DANE de Municipio`
 secuestros$MPIO <- secuestros$Municipio
-secuestros$lesionados_civiles <- secuestros $`Lesionados Civiles`
 secuestros$victimas <- secuestros$`Total de Víctimas del Caso`
-secuestros<- subset(secuestros, select = c(id_caso, ano, codmpio, MPIO, lesionados_civiles ,victimas))
+secuestros$codmpio <- as.numeric(as.character(secuestros$codmpio))
+secuestros$ano <- as.numeric(as.character(secuestros$ano))
+secuestros<- subset(secuestros, select = c(id_caso, ano, codmpio, MPIO ,victimas))
+secuestros <- subset(secuestros, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
+secuestros <-subset(secuestros, ano >1985)
 
 
 
@@ -430,21 +514,75 @@ violencia_sexual$id_caso<- violencia_sexual$`ID Caso`
 violencia_sexual$ano<-violencia_sexual$Año
 violencia_sexual$codmpio <- violencia_sexual$`Código DANE de Municipio`
 violencia_sexual$MPIO <- violencia_sexual$Municipio
-violencia_sexual$lesionados_civiles <- violencia_sexual $`Lesionados Civiles`
 violencia_sexual$victimas <- violencia_sexual$`Total de Víctimas del Caso`
-violencia_sexual<- subset(violencia_sexual, select = c(id_caso, ano, codmpio, MPIO, lesionados_civiles ,victimas))
+violencia_sexual<- subset(violencia_sexual, select = c(id_caso, ano, codmpio, MPIO ,victimas))
 
 violencia_sexual <- subset(violencia_sexual, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
 violencia_sexual$codmpio <- as.numeric(as.character(violencia_sexual$codmpio))
 violencia_sexual$ano <- as.numeric(as.character(violencia_sexual$ano))
 violencia_sexual <-subset(violencia_sexual, ano >1985)
 
+
+
+acciones_belicas <- acciones_belicas %>% 
+  group_by(codmpio, ano) %>% 
+  mutate(total_victimas = sum(victimas))
+
+
+asesinatos_selectivos <- asesinatos_selectivos %>% 
+  group_by(codmpio, ano) %>% 
+  mutate(total_victimas = sum(victimas))
+
+
+danos_bienes_civiles <- danos_bienes_civiles %>% 
+  group_by(codmpio, ano) %>% 
+  mutate(total_victimas = sum(victimas))
+
+
+desaparicion_forzada <- desaparicion_forzada %>% 
+  group_by(codmpio, ano) %>% 
+  mutate(total_victimas = sum(victimas))
+
+
+masacres <- masacres %>% 
+  group_by(codmpio, ano) %>% 
+  mutate(total_victimas = sum(victimas))
+
+
+minas <- minas %>% 
+  group_by(codmpio, ano) %>% 
+  mutate(total_victimas = sum(victimas))
+
+
+reclutamiento_menores <- reclutamiento_menores %>% 
+  group_by(codmpio, ano) %>% 
+  mutate(total_victimas = sum(victimas))
+
+
+secuestros <- secuestros %>% 
+  group_by(codmpio, ano) %>% 
+  mutate(total_victimas = sum(victimas))
+
 violencia_sexual <- violencia_sexual %>% 
   group_by(codmpio, ano) %>% 
   mutate(total_victimas = sum(victimas))
 
-hist(violencia_sexual$total_victimas)
 
+reduccion_poblacional <- rbind(asesinatos_selectivos, masacres, minas, secuestros,
+                               desaparicion_forzada)
+
+reduccion_poblacional <- reduccion_poblacional %>% 
+  distinct(codmpio, ano, .keep_all = TRUE)
+
+
+desincentivo_votos <- rbind(violencia_sexual, reclutamiento_menores,danos_bienes_civiles )
+
+desincentivo_votos <- desincentivo_votos %>% 
+  distinct(codmpio, ano, .keep_all = TRUE)
+
+poblacion_y_desincentivos<- merge(poblacion_y_votos, desincentivo_votos, by = c("codmpio", "ano"))
+
+poblacion_y_desincentivos$desincentivos <- poblacion_y_desincentivos$total_victimas
 
 
 
