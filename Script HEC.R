@@ -23,17 +23,6 @@ poblacion_2018_2026 <- read_excel("anexo-proyecciones-poblacion-Municipal_2018-2
 
 
 
-#Bases de datos violencia
-acciones_belicas <- read_excel("CasosAB_202206.xlsx")
-asesinatos_selectivos <- read_excel("CasosAS_202206.xlsx")
-danos_bienes_civiles <- read_excel("CasosDB_202206.xlsx")
-desaparicion_forzada <- read_excel("CasosDF_202206.xlsx")
-masacres <- read_excel("CasosMA_202206.xlsx")
-minas <- read_excel("CasosMI_202206.xlsx")
-reclutamiento_menores <- read_excel("CasosRU_202206.xlsx")
-secuestros <- read_excel("CasosSE_202206.xlsx")
-violencia_sexual <- read_excel("CasosVS_202206.xlsx")
-
 
 
 
@@ -269,7 +258,7 @@ rm(total_votos_pres_1986, total_votos_pres_1990,
    total_votos_pres_2002, 
    total_votos_pres_2006, total_votos_pres_2010, 
   total_votos_pres_2014, 
-   total_votos_pres_2018, )
+   total_votos_pres_2018 )
 
 poblacion_y_votos <- left_join(x=poblacion_1986_2018, y=votos_totales, by=c("codmpio","ano"))
 
@@ -281,189 +270,6 @@ poblacion_y_votos <- na.omit(poblacion_y_votos)
 poblacion_y_votos <- subset(poblacion_y_votos, total_mayores18 != 0 &  votos != 0 & participacion < 1)
 
 hist(poblacion_y_votos$participacion)
-
-
-#Limpieza bases de datos violencia
-
-acciones_belicas$id_caso<-acciones_belicas$`ID Caso`
-acciones_belicas$ano<-acciones_belicas$Año
-acciones_belicas$codmpio <- acciones_belicas$`Código DANE de Municipio`
-acciones_belicas$MPIO <- acciones_belicas$Municipio
-acciones_belicas$victimas <- acciones_belicas$`Total de Víctimas del Caso`
-acciones_belicas$codmpio <- as.numeric(as.character(acciones_belicas$codmpio))
-acciones_belicas$ano <- as.numeric(as.character(acciones_belicas$ano))
-acciones_belicas<- subset(acciones_belicas, select = c(id_caso, ano, codmpio, MPIO,victimas))
-acciones_belicas <- subset(acciones_belicas, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
-acciones_belicas <-subset(acciones_belicas, ano >1985)
-
-
-
-asesinatos_selectivos$id_caso<- asesinatos_selectivos$`ID Caso`
-asesinatos_selectivos$ano<-asesinatos_selectivos$Año
-asesinatos_selectivos$codmpio <- asesinatos_selectivos$`Código DANE de Municipio`
-asesinatos_selectivos$MPIO <- asesinatos_selectivos$Municipio
-asesinatos_selectivos$victimas <- asesinatos_selectivos$`Total de Víctimas del Caso`
-asesinatos_selectivos$codmpio <- as.numeric(as.character(asesinatos_selectivos$codmpio))
-asesinatos_selectivos$ano <- as.numeric(as.character(asesinatos_selectivos$ano))
-asesinatos_selectivos<- subset(asesinatos_selectivos, select = c(id_caso, ano, codmpio, MPIO ,victimas))
-asesinatos_selectivos <- subset(asesinatos_selectivos, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
-asesinatos_selectivos <-subset(asesinatos_selectivos, ano >1985)
-
-
-
-danos_bienes_civiles$id_caso<- danos_bienes_civiles$`ID Caso`
-danos_bienes_civiles$ano<-danos_bienes_civiles$Año
-danos_bienes_civiles$codmpio <- danos_bienes_civiles$`Código DANE de Municipio`
-danos_bienes_civiles$MPIO <- danos_bienes_civiles$Municipio
-danos_bienes_civiles$victimas <- danos_bienes_civiles$`Total de Víctimas del Caso`
-danos_bienes_civiles$codmpio <- as.numeric(as.character(danos_bienes_civiles$codmpio))
-danos_bienes_civiles$ano <- as.numeric(as.character(danos_bienes_civiles$ano))
-danos_bienes_civiles<- subset(danos_bienes_civiles, select = c(id_caso, ano, codmpio, MPIO ,victimas))
-danos_bienes_civiles <- subset(danos_bienes_civiles, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
-danos_bienes_civiles <-subset(danos_bienes_civiles, ano >1985)
-
-
-
-desaparicion_forzada$id_caso<- desaparicion_forzada$`ID Caso`
-desaparicion_forzada$ano<-desaparicion_forzada$Año
-desaparicion_forzada$codmpio <- desaparicion_forzada$`Código DANE de Municipio`
-desaparicion_forzada$MPIO <- desaparicion_forzada$Municipio
-desaparicion_forzada$victimas <- desaparicion_forzada$`Total de Víctimas del Caso`
-desaparicion_forzada$codmpio <- as.numeric(as.character(desaparicion_forzada$codmpio))
-desaparicion_forzada$ano <- as.numeric(as.character(desaparicion_forzada$ano))
-desaparicion_forzada<- subset(desaparicion_forzada, select = c(id_caso, ano, codmpio, MPIO ,victimas))
-desaparicion_forzada <- subset(desaparicion_forzada, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
-desaparicion_forzada <-subset(desaparicion_forzada, ano >1985)
-
-
-
-
-masacres$id_caso<- masacres$`ID Caso`
-masacres$ano<-masacres$Año
-masacres$codmpio <- masacres$`Código DANE de Municipio`
-masacres$MPIO <- masacres$Municipio
-masacres$victimas <- masacres$`Total de Víctimas del Caso`
-masacres$codmpio <- as.numeric(as.character(masacres$codmpio))
-masacres$ano <- as.numeric(as.character(masacres$ano))
-masacres<- subset(masacres, select = c(id_caso, ano, codmpio, MPIO ,victimas))
-masacres <- subset(masacres, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
-masacres <-subset(masacres, ano >1985)
-
-
-
-minas$id_caso<- minas$`ID Caso`
-minas$ano<-minas$Año
-minas$codmpio <- minas$`Código DANE de Municipio`
-minas$MPIO <- minas$Municipio
-minas$victimas <- minas$`Total de Víctimas del Caso`
-minas$codmpio <- as.numeric(as.character(minas$codmpio))
-minas$ano <- as.numeric(as.character(minas$ano))
-minas<- subset(minas, select = c(id_caso, ano, codmpio, MPIO ,victimas))
-minas <- subset(minas, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
-minas <-subset(minas, ano >1985)
-
-
-
-reclutamiento_menores$id_caso<- reclutamiento_menores$`ID Caso`
-reclutamiento_menores$ano<-reclutamiento_menores$Año
-reclutamiento_menores$codmpio <- reclutamiento_menores$`Código DANE de Municipio`
-reclutamiento_menores$MPIO <- reclutamiento_menores$Municipio
-reclutamiento_menores$victimas <- reclutamiento_menores$`Total de Víctimas del Caso`
-reclutamiento_menores$codmpio <- as.numeric(as.character(reclutamiento_menores$codmpio))
-reclutamiento_menores$ano <- as.numeric(as.character(reclutamiento_menores$ano))
-reclutamiento_menores<- subset(reclutamiento_menores, select = c(id_caso, ano, codmpio, MPIO ,victimas))
-reclutamiento_menores <- subset(reclutamiento_menores, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
-reclutamiento_menores <-subset(reclutamiento_menores, ano >1985)
-
-
-
-
-secuestros$id_caso<- secuestros$`ID Caso`
-secuestros$ano<-secuestros$Año
-secuestros$codmpio <- secuestros$`Código DANE de Municipio`
-secuestros$MPIO <- secuestros$Municipio
-secuestros$victimas <- secuestros$`Total de Víctimas del Caso`
-secuestros$codmpio <- as.numeric(as.character(secuestros$codmpio))
-secuestros$ano <- as.numeric(as.character(secuestros$ano))
-secuestros<- subset(secuestros, select = c(id_caso, ano, codmpio, MPIO ,victimas))
-secuestros <- subset(secuestros, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
-secuestros <-subset(secuestros, ano >1985)
-
-
-
-violencia_sexual$id_caso<- violencia_sexual$`ID Caso`
-violencia_sexual$ano<-violencia_sexual$Año
-violencia_sexual$codmpio <- violencia_sexual$`Código DANE de Municipio`
-violencia_sexual$MPIO <- violencia_sexual$Municipio
-violencia_sexual$victimas <- violencia_sexual$`Total de Víctimas del Caso`
-violencia_sexual<- subset(violencia_sexual, select = c(id_caso, ano, codmpio, MPIO ,victimas))
-
-violencia_sexual <- subset(violencia_sexual, ano != "0000" &  codmpio != "00000" & MPIO != "SIN INFORMACION" )
-violencia_sexual$codmpio <- as.numeric(as.character(violencia_sexual$codmpio))
-violencia_sexual$ano <- as.numeric(as.character(violencia_sexual$ano))
-violencia_sexual <-subset(violencia_sexual, ano >1985)
-
-
-
-acciones_belicas <- acciones_belicas %>% 
-  group_by(codmpio, ano) %>% 
-  mutate(total_victimas = sum(victimas))
-
-
-asesinatos_selectivos <- asesinatos_selectivos %>% 
-  group_by(codmpio, ano) %>% 
-  mutate(total_victimas = sum(victimas))
-
-
-danos_bienes_civiles <- danos_bienes_civiles %>% 
-  group_by(codmpio, ano) %>% 
-  mutate(total_victimas = sum(victimas))
-
-
-desaparicion_forzada <- desaparicion_forzada %>% 
-  group_by(codmpio, ano) %>% 
-  mutate(total_victimas = sum(victimas))
-
-
-masacres <- masacres %>% 
-  group_by(codmpio, ano) %>% 
-  mutate(total_victimas = sum(victimas))
-
-
-minas <- minas %>% 
-  group_by(codmpio, ano) %>% 
-  mutate(total_victimas = sum(victimas))
-
-
-reclutamiento_menores <- reclutamiento_menores %>% 
-  group_by(codmpio, ano) %>% 
-  mutate(total_victimas = sum(victimas))
-
-
-secuestros <- secuestros %>% 
-  group_by(codmpio, ano) %>% 
-  mutate(total_victimas = sum(victimas))
-
-violencia_sexual <- violencia_sexual %>% 
-  group_by(codmpio, ano) %>% 
-  mutate(total_victimas = sum(victimas))
-
-
-reduccion_poblacional <- rbind(asesinatos_selectivos, masacres, minas, secuestros,
-                               desaparicion_forzada)
-
-reduccion_poblacional <- reduccion_poblacional %>% 
-  distinct(codmpio, ano, .keep_all = TRUE)
-
-
-desincentivo_votos <- rbind(violencia_sexual, reclutamiento_menores,danos_bienes_civiles )
-
-desincentivo_votos <- desincentivo_votos %>% 
-  distinct(codmpio, ano, .keep_all = TRUE)
-
-poblacion_y_desincentivos<- merge(poblacion_y_votos, desincentivo_votos, by = c("codmpio", "ano"))
-
-poblacion_y_desincentivos$desincentivos <- poblacion_y_desincentivos$total_victimas
 
 
 

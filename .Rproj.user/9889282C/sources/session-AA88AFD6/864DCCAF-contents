@@ -1,0 +1,391 @@
+                                  #=======================================#
+                                  #                                       #
+                                  #     Base ataques - Proyecto H.E.C     #
+                                  #                                       #                                
+                                  #     Simon Cortazar Alba - 202020930   #  
+                                  #     Santiago Huertas -                #
+                                  #     Valeria Angel -                   #
+                                  #     Camila Garnica -                  #
+                                  #                                       #
+                                  #=======================================#
+
+# Preliminares
+
+rm(list=ls())
+require(pacman)
+p_load(tidyverse, rio, skimr, janitor, ggplot2, haven, dplyr, stargazer,broom,xlsx,readxl, data.table, stringr) 
+
+
+# Abrimos la base de participacion
+
+particip <- read_excel("input/poblacion_votos.xlsx")
+
+
+# 1. Evaluamos cualuiqer actividad letal de grupos armados al margen de la ley.
+
+  # 1.1 Violencia sexual - victimas
+
+  vic_VS <- read_excel("input/pob_EV/VictimasVS_202209.xlsx") %>% 
+            setnames(old=c("Código DANE de Municipio", "ID Persona","Situación Actual de la Víctima","Año", "Mes", "Día", "Calidad de la Víctima o la Baja"), 
+            new =c("codmpio","id_persona","vic_stat", "ano","mes","dia", "tipo")) %>% 
+            filter(ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00") %>% 
+            select(id_persona,codmpio,Edad,vic_stat,Municipio,ano,mes,dia, tipo)
+  
+    # Filtramos para los muertos
+        
+        vic_VS <- vic_VS %>% 
+          mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric) %>% 
+          filter(vic_stat !="VIVA" )
+        
+
+    # Creamos la variable que tome los valores del número total de muertes
+          
+        vic_VS <- vic_VS %>% 
+          count(ano, codmpio, mes, name = "tot_M_VS")
+          
+
+  # 1.2 Victimas - secuestro
+  
+    # Como estamos analizando la letalidad (muertos producidos) de los ataques, no vamos a incluir esta variable
+    # dentro de este apartado, se analizará después. Además, en la base no se identifica algun muerto producido 
+    # mientras se realizaba el secuestro.
+  
+  
+  # 1.3 Victimas - Reclutamiento Forzado de menores
+  
+  
+        # Como de momento estamos analizando ataques que provoquen una disminución en la población en edad de votar
+        # analizaremos esto después.
+    
+  
+  # 1.4 Victimas - Minas
+  
+  vic_MI <- read_excel("input/pob_EV/VictimasMI_202209.xlsx") %>% 
+            setnames(old=c("Código DANE de Municipio", "ID Persona","Situación Actual de la Víctima", "Mes", "Día", "Año", "Calidad de la Víctima o la Baja"), 
+            new =c("codmpio","id_persona","vic_stat","mes", "dia", "ano", "tipo")) %>% 
+            select(codmpio,id_persona,vic_stat, ano, mes, dia, Edad, Municipio, tipo) %>% 
+            filter(ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00")  
+  
+    # Filtramos para los muertos
+  
+            vic_MI <- vic_MI %>% 
+              mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric) %>% 
+              filter(vic_stat != "HERIDA" )  
+            
+            
+      # Creamos la variable que tome los valores del número total de muertes
+            
+            vic_MI <- vic_MI %>% 
+              count(ano, codmpio, mes,name = "tot_M_MI")
+            
+  
+      
+  # 1.5 Victimas - Masacre (esta base considera que todas las observaciones son personas asesinadas)
+  
+  vic_MA <- read_excel("input/pob_EV/VictimasMA_202209.xlsx") %>% 
+            setnames(old=c("Código DANE de Municipio", "ID Persona", "Mes", "Día", "Año", "Calidad de la Víctima o la Baja"), 
+            new =c("codmpio","id_persona","mes", "dia", "ano", "tipo")) %>% 
+            select(codmpio,id_persona, ano, mes, dia, Edad, Municipio, tipo) %>% 
+            filter( ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00")  %>% 
+            mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric)
+  
+   # Creamos la variable que tome los valores del número total de muertes
+  
+      vic_MA <- vic_MA %>% 
+        count(ano, codmpio, mes, name = "tot_M_MA")
+      
+  
+  
+  # 1.6 Victima - Acciones Belicas - Civiles (esta base considera que todas las observaciones son personas asesinadas)
+  
+  vic_AB <-  read_excel("input/pob_EV/VictimasAB_202209.xlsx") %>% 
+             setnames(old=c("Código DANE de Municipio", "ID Persona", "Mes", "Día", "Año","Calidad de la Víctima o la Baja"),
+             new =c("codmpio","id_persona","mes", "dia", "ano","tipo")) %>% 
+             filter(ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00") %>% 
+             select(codmpio,id_persona, ano, mes, dia, Edad, Municipio,tipo) %>% 
+             mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric)
+  
+  # Creamos la variable que tome los valores del número total de muertes
+  
+      vic_AB <- vic_AB %>% 
+        count(ano, codmpio, mes, name = "tot_M_AB")
+  
+  
+  # 1.7 Victimas - Ataques Poblaciones 
+      
+      
+      # Esta base toma en cuenta ataques que implican "Las modalidades de violencia que conforman los ataques a la población 
+      # civil se organizan en tres categorías, definidas en función de la naturaleza del daño infligido, a saber, 
+      # la integridad física y la vida, la libertad y los bienes".
+      
+    # Como conisdera más ampliamente atentados contra la población civil, no especifica la Situacion Actual de la 
+    # victima, y es ambiguo de si el abandono de tierras o desplazamiento es especificamente de los civiles, 
+    # la tomamos en el siguiente apartado.
+  
+  # 1.8 Victimas - Atentado Terrorista 
+      
+      
+      # Esta base toma en cuenta ataques que implican "Se entiende como todo ataque perpetrado mediante el uso de explosivos, 
+      # los cuales ocurren en zonas densamente pobladas y en los que hay afectación plural a personas o a bienes civiles, 
+      # independientemente de si el objetivo de la acción es civil o militar.".
+      
+      # Como conisdera más ampliamente atentados contra la población civil, no especifica la Situacion Actual de la 
+      # victima, y es ambiguo de si el abandono de tierras o desplazamiento es especificamente de los civiles, 
+      # la tomamos en el siguiente apartado.
+      
+  
+  # 1.9 Victimas - Daños a Bienes Civiles
+  
+        # Como de momento estamos analizando ataques que provoquen una disminución en la población en edad de votar
+        # analizaremos esto después.
+  
+        
+  # 1.10 Victimas - Desaparicion Forzada
+  
+    # No vamos a incluir esta variable para este apartado ya que solo considera un ataque donde en su procedimiento
+    # no hubo muertos (segun la base). Hay muertos, pero son vicitmas que aparecieron muertas. Estas consideraciones
+    # se toman en cuenta en el siguiente apartado.
+  
+  
+  # 1.11 Victimas - Asesinato selectivo (esta base considera que todas las observaciones son personas asesinadas)
+  
+  vic_AS <- read_excel("input/pob_EV/VictimasAS_202209.xlsx") %>% 
+            setnames(old=c("Código DANE de Municipio", "ID Persona", "Mes", "Día", "Año","Calidad de la Víctima o la Baja"),
+            new =c("codmpio","id_persona","mes", "dia", "ano","tipo")) %>% 
+            filter(ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00") %>% 
+            select(codmpio,id_persona, ano, mes, dia, Edad, Municipio,tipo) %>% 
+            mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric)
+  
+  
+    # Creamos la variable que tome los valores del número total de muertes
+  
+        vic_AS <- vic_AS %>% 
+          count(ano, codmpio, mes, name = "tot_M_AS")
+        
+      
+    # Unimos las bases    
+        
+        u_pob_EV <- list(vic_AB,vic_AS,vic_MA,vic_MI,vic_VS) %>% 
+        reduce(left_join, by = c("ano","codmpio", "mes"))
+        
+        
+#=======================================================================================================================================================================================#        
+        
+  # 2. Evaluamos cualuiqer actividad  de grupos armados al margen de la ley que genere cualquier
+  #    tipo de desincentivo a votar. En este caso, consideramos todos los ataques no letales.
+        
+        
+        rm(list=ls() [! ls() %in% c("particip","u_pob_EV")]) # Nos quedamos unicamente con la base anteriormente creada y con la de participación
+        
+    # 2.1 Violencia Sexual
+        
+        vic_VS_b <-   read_excel("input/pob_EV/VictimasVS_202209.xlsx") %>% 
+                      setnames(old=c("Código DANE de Municipio", "ID Persona","Situación Actual de la Víctima","Año", "Mes", "Día", "Calidad de la Víctima o la Baja"), 
+                      new =c("codmpio","id_persona","vic_stat", "ano","mes","dia", "tipo")) %>% 
+                      filter( ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "0000" & mes != "00") %>% 
+                      select(id_persona,codmpio,Edad,vic_stat,Municipio,ano,mes,dia, tipo)
+            
+        
+        # Filtramos para los que no murieron
+        
+        vic_VS_b <- vic_VS_b %>% 
+          filter(vic_stat !="MUERTA" ) 
+        
+        # Creamos la variable que indique el número de casos
+        
+              vic_VS_b <- vic_VS_b %>% 
+                mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric) %>% 
+                count(ano, codmpio, mes,name = "tot_VS") 
+              
+              
+      # 2.2 Secuestro
+              
+        
+              vic_SE_b <- read_excel("input/pob_EV/VictimasSE_202209.xlsx") %>% 
+                          setnames(old=c("Código DANE de Municipio", "Calidad de la Víctima o la Baja","ID Persona","Situación Actual de la Víctima", "Días de Cautiverio", "Mes", "Día", "Año"), 
+                          new =c("codmpio","tipo","id_persona","vic_stat", "dias_caut","mes", "dia", "ano")) %>% 
+                          filter( ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00") %>% 
+                          select(codmpio,id_persona,vic_stat, dias_caut, ano, mes, dia, Edad, Municipio) 
+            
+              
+              # Creamos la variable que tome los valores del número total de secuestros 
+              
+              vic_SE_b <- vic_SE_b %>% 
+                mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric) %>% 
+                count(ano, codmpio, mes, name = "tot_SE")
+            
+        
+        
+      # 2.3 - Reclutamiento - Menores
+              
+      vic_RF_b <- read_excel("input/pob_EV/VictimasRU_202209.xlsx") %>% 
+                  setnames(old=c("Código DANE de Municipio","ID Persona", "Mes", "Día", "Año"), 
+                  new =c("codmpio","id_persona","mes", "dia", "ano")) %>% 
+                  filter( ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00") %>% 
+                  select(codmpio,id_persona, ano, mes, dia, Municipio) 
+      
+          # Creamos la variable que indique el número de casos
+          
+          vic_RF_b <- vic_RF_b %>% 
+            mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric) %>% 
+            count(ano, codmpio, mes,name = "tot_RF") 
+            
+        
+      # 2.4 - Victimas - Minas
+          
+          vic_MI_b <- read_excel("input/pob_EV/VictimasMI_202209.xlsx") %>% 
+                    setnames(old=c("Código DANE de Municipio", "ID Persona","Situación Actual de la Víctima", "Mes", "Día", "Año", "Calidad de la Víctima o la Baja"), 
+                    new =c("codmpio","id_persona","vic_stat","mes", "dia", "ano", "tipo")) %>% 
+                    select(codmpio,id_persona,vic_stat, ano, mes, dia, Edad, Municipio, tipo) %>% 
+                    filter( ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00")  
+          
+          
+          # Filtramos para los que no murieron
+          
+          vic_MI_b <- vic_MI_b %>% 
+            mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric) %>% 
+            filter(vic_stat !="MUERTA" )
+          
+          # Creamos la variable que tome los valores del número total de muertes y afectados
+          
+            vic_MI_b <- vic_MI_b %>% 
+              count(ano, codmpio, mes,name = "tot_MI")
+        
+        
+      # 2.5 - Victimas - Masacre (esta base considera que todas las observaciones son personas asesinadas)
+        
+       # No consideramos esta variable ya que todas las observaciones son muertos
+            
+            
+     # 2.6 Victima - Acciones Belicas - Civiles ( considera que todas las observaciones son personas asesinadas)
+           
+            
+            # No consideramos esta variable ya que todas las observaciones son muertos
+            
+            
+      # 2.7 Victimas - Ataques Poblaciones 
+            
+            
+            vic_AP_b <- read_excel("input/pob_EV/VictimasAP_202209.xlsx") %>% 
+                        setnames(old=c("Código DANE de Municipio", "ID Persona", "Mes", "Día", "Año","Calidad de la Víctima o la Baja"),
+                        new =c("codmpio","id_persona","mes", "dia", "ano","tipo")) %>% 
+                        filter( ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00") %>% 
+                        select(codmpio,id_persona, ano, mes, dia, Edad, Municipio,tipo) %>% 
+                        mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric)
+            
+            # Creamos la variable que tome los valores del número total de afrectados
+            
+            vic_AP_b <- vic_AP_b %>% 
+              count(ano, codmpio, mes, name = "tot_AP")
+            
+            
+      # 2.8 Victimas - Atentados terroristas
+            
+            vic_AT_b <- read_excel("input/pob_EV/VictimasAT_202209.xlsx") %>% 
+                        setnames(old=c("Código DANE de Municipio", "ID Persona", "Mes", "Día", "Año","Calidad de la Víctima o la Baja"),
+                        new =c("codmpio","id_persona","mes", "dia", "ano","tipo")) %>% 
+                        filter( ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00") %>% 
+                        select(codmpio,id_persona, ano, mes, dia, Edad, Municipio,tipo) %>% 
+                        mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric)
+                      
+            # Creamos la variable que tome los valores del número total de afectados
+            
+                      vic_AT_b <- vic_AT_b %>% 
+                        count(ano, codmpio, mes, name = "tot_AT")
+            
+            
+        
+        # 2.9 Victimas - Daños bienes civiles
+                      
+           vic_DB_b <- read_excel("input/pob_EV/VictimasDB_202209.xlsx") %>% 
+                       setnames(old=c("Código DANE de Municipio", "ID Persona", "Mes", "Día", "Año","Calidad de la Víctima o la Baja"),
+                       new =c("codmpio","id_persona","mes", "dia", "ano","tipo")) %>% 
+                       filter(ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00") %>% 
+                       select(codmpio,id_persona, ano, mes, dia, Edad, Municipio,tipo) %>% 
+                       mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric)
+           
+           # Creamos la variable que tome los valores del número total de afectados
+           
+           vic_DB_b <- vic_DB_b %>% 
+             count(ano, codmpio, mes, name = "tot_DB")
+           
+          
+           
+           
+        # 2.10 - Desaparicion Forzada       
+           
+           vic_DF_b <- read_excel("input/pob_EV/VictimasDF_202209.xlsx") %>% 
+                       setnames(old=c("Código DANE de Municipio", "ID Persona","Situación Actual de la Víctima", "Mes", "Día", "Año", "Calidad de la Víctima o la Baja"), 
+                       new =c("codmpio","id_persona","vic_stat","mes", "dia", "ano", "tipo")) %>% 
+                       select(codmpio,id_persona,vic_stat, ano, mes, dia, Edad, Municipio, tipo) %>% 
+                       filter( ano != "0000" & Municipio != "SIN INFORMACION" & codmpio != "0" & mes != "00")
+                     
+             
+             # Creamos la variable que tome los valores del número total de muertes
+             
+             vic_DF_b <- vic_DF_b %>% 
+               mutate_at(.vars=c("ano","codmpio", "mes", "dia"), .funs=as.numeric) %>% 
+               count(ano, codmpio, mes,name = "tot_DF")
+             
+             
+        # 2.11 - Victimas - Asesinamiento selectivo
+             
+             
+             # No consideramos esta variable ya que todas las observaciones son muertos
+             
+             
+             
+             # Unimos las bases    
+             
+             u_VOT <- list( vic_AP_b, vic_AT_b, vic_DB_b, vic_DF_b, vic_MI_b, vic_RF_b, vic_SE_b, vic_VS_b) %>% 
+               reduce(right_join, by = c("ano","codmpio", "mes")) 
+             
+     
+
+
+    # 3. 
+      
+      rm(list=ls() [! ls() %in% c("particip","u_pob_EV","u_VOT")])
+      
+      # Para cada base, creamos una variable que sea la suma de todas la variables que denoten ataques
+      
+        # 1. Para u_pob_EV
+      
+      u_pob_EV<- u_pob_EV %>% drop_na(codmpio, mes)
+      u_pob_EV <- u_pob_EV %>%  
+        replace(is.na(u_pob_EV), 0) %>% 
+        group_by(ano, codmpio, mes) %>% 
+        mutate(ataque_letal= tot_M_AB + tot_M_AS 
+         + tot_M_MA + tot_M_MI  + tot_M_VS)
+      
+
+      
+        # 2. Para  u_VOT
+      
+      u_VOT<- u_VOT %>% drop_na(codmpio, mes)
+      u_VOT <- u_VOT %>%  
+        replace(is.na(u_VOT), 0) %>% 
+        group_by(ano, codmpio, mes) %>% 
+        mutate(ataque_n_letal= tot_AP + tot_AT + 
+                 tot_DB + tot_DF + tot_MI + tot_RF +
+                 tot_SE + tot_VS)
+      
+      
+      # 3. Unimos las bases en una sola
+      
+      ataques_killings <- right_join(x=u_VOT, y=u_pob_EV, by=c("ano","codmpio", "mes")) %>% 
+                          select(codmpio, ano, mes, ataque_letal, ataque_n_letal) 
+
+      
+      # Exportamos la base
+      
+      export(ataques_killings, "output/ataques_killings.xlsx")
+
+      
+      
+      
+ 
+
+
+
+
