@@ -1,0 +1,16 @@
+rm(list = ls())
+setwd("/Users/santiagohuertas/Desktop/untitled folder")
+require(pacman)
+p_load(tidyverse, rio, skimr, janitor, ggplot2, haven, dplyr, stargazer,broom,xlsx,readxl) 
+
+
+violencia_participacion <- read_excel("particip_vio.xlsx")
+
+
+summary(violencia_participacion)
+
+reg1 <- lm(participacion~ataq_l+ataq_no_l, data = violencia_participacion)
+
+stargazer(reg1,type="html", out="regresión 2i.doc")
+
+
